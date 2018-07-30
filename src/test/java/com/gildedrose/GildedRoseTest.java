@@ -30,7 +30,7 @@ public class GildedRoseTest {
                 "Elixir of the Mongoose, 4, 6\n" +
                 "Sulfuras, Hand of Ragnaros, 0, 80\n" +
                 "Backstage passes to a TAFKAL80ETC concert, 14, 21\n" +
-                "Conjured Mana Cake, 1, 5";
+                "Conjured Mana Cake, 2, 4";
         assertEquals(sj.toString(), expected);
     }
 }
