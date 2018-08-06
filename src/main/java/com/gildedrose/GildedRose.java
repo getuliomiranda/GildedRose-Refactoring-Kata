@@ -2,15 +2,18 @@ package com.gildedrose;
 
 import com.gildedrose.classifier.CategoryManager;
 import com.gildedrose.model.ItemCategory;
+import com.gildedrose.sellin.SellInManager;
 
 public class GildedRose {
 
     private Item[] items;
     private CategoryManager categoryManager;
+    private SellInManager sellInManager;
 
-    public GildedRose(Item[] items, CategoryManager categoryManager) {
+    public GildedRose(Item[] items, CategoryManager categoryManager, SellInManager sellInManager) {
         this.items = items;
         this.categoryManager = categoryManager;
+        this.sellInManager = sellInManager;
     }
 
     public void updateQuality() {
@@ -46,9 +49,7 @@ public class GildedRose {
                 }
             }
 
-            if (itemCategory != ItemCategory.LEGENDARY) {
-                item.setSellIn(item.getSellIn() - 1);
-            }
+            sellInManager.update(item, itemCategory);
 
             if (item.getSellIn() < 0) {
                 if (itemCategory != ItemCategory.AGED) {

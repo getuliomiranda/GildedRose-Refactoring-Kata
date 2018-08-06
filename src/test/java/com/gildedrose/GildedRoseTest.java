@@ -1,6 +1,7 @@
 package com.gildedrose;
 
 import com.gildedrose.classifier.CategoryManager;
+import com.gildedrose.sellin.SellInManager;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class GildedRoseTest {
                 new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
                 new Item("Conjured Mana Cake", 3, 6)
         };
-        GildedRose app = new GildedRose(items, new CategoryManager());
+        GildedRose app = new GildedRose(items, new CategoryManager(), new SellInManager());
         app.updateQuality();
 
         StringJoiner sj = new StringJoiner("\n");
