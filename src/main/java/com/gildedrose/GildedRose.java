@@ -1,63 +1,69 @@
 package com.gildedrose;
 
+import com.gildedrose.classifier.CategoryManager;
+import com.gildedrose.model.ItemCategory;
+
 public class GildedRose {
 
     private Item[] items;
+    private CategoryManager categoryManager;
 
-    public GildedRose(Item[] items) {
+    public GildedRose(Item[] items, CategoryManager categoryManager) {
         this.items = items;
+        this.categoryManager = categoryManager;
     }
 
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
-            if (!items[i].getName().equals("Aged Brie")
-                    && !items[i].getName().equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (items[i].getQuality() > 0) {
-                    if (!items[i].getName().equals("Sulfuras, Hand of Ragnaros")) {
-                        items[i].setQuality(items[i].getQuality() - 1);
-                        if(items[i].getName().startsWith("Conjured") && items[i].getQuality() > 0){
-                            items[i].setQuality(items[i].getQuality() - 1);
+            Item item = items[i];
+            ItemCategory itemCategory = categoryManager.identify(item);
+            if (itemCategory != ItemCategory.AGED && itemCategory != ItemCategory.PASS) {
+                if (item.getQuality() > 0) {
+                    if (itemCategory != ItemCategory.LEGENDARY) {
+                        item.setQuality(item.getQuality() - 1);
+                        if (itemCategory == ItemCategory.CONJURED && item.getQuality() > 0) {
+                            item.setQuality(item.getQuality() - 1);
                         }
                     }
                 }
             } else {
-                if (items[i].getQuality() < 50) {
-                    items[i].setQuality(items[i].getQuality() + 1);
+                if (item.getQuality() < 50) {
+                    item.setQuality(item.getQuality() + 1);
 
-                    if (items[i].getName().equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].getSellIn() < 11) {
-                            if (items[i].getQuality() < 50) {
-                                items[i].setQuality(items[i].getQuality() + 1);
+                    if (itemCategory == ItemCategory.PASS) {
+                        if (item.getSellIn() < 11) {
+                            if (item.getQuality() < 50) {
+                                item.setQuality(item.getQuality() + 1);
                             }
                         }
 
-                        if (items[i].getSellIn() < 6) {
-                            if (items[i].getQuality() < 50) {
-                                items[i].setQuality(items[i].getQuality() + 1);
+                        if (item.getSellIn() < 6) {
+                            if (item.getQuality() < 50) {
+                                item.setQuality(item.getQuality() + 1);
                             }
                         }
                     }
                 }
             }
 
-            if (!items[i].getName().equals("Sulfuras, Hand of Ragnaros")) {
-                items[i].setSellIn(items[i].getSellIn() - 1);
+            if (itemCategory != ItemCategory.LEGENDARY) {
+                item.setSellIn(item.getSellIn() - 1);
             }
 
-            if (items[i].getSellIn() < 0) {
-                if (!items[i].getName().equals("Aged Brie")) {
-                    if (!items[i].getName().equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].getQuality() > 0) {
-                            if (!items[i].getName().equals("Sulfuras, Hand of Ragnaros")) {
-                                items[i].setQuality(items[i].getQuality() - 1);
+            if (item.getSellIn() < 0) {
+                if (itemCategory != ItemCategory.AGED) {
+                    if (itemCategory != ItemCategory.PASS) {
+                        if (item.getQuality() > 0) {
+                            if (itemCategory != ItemCategory.LEGENDARY) {
+                                item.setQuality(item.getQuality() - 1);
                             }
                         }
                     } else {
-                        items[i].setQuality(items[i].getQuality() - items[i].getQuality());
+                        item.setQuality(item.getQuality() - item.getQuality());
                     }
                 } else {
-                    if (items[i].getQuality() < 50) {
-                        items[i].setQuality(items[i].getQuality() + 1);
+                    if (item.getQuality() < 50) {
+                        item.setQuality(item.getQuality() + 1);
                     }
                 }
             }
